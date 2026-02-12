@@ -26,19 +26,21 @@ public class CustomerControllerIntegrationTest {
 
     @Test
     void createCustomerHappyPath() throws Exception {
-        CustomerRequest req = new CustomerRequest("Juan", "juan@example.com");
+        // Enviar todos los campos requeridos por CustomerRequest
+        CustomerRequest req = new CustomerRequest("Juan", "CC", "12345678", "juan@example.com");
         mockMvc.perform(post("/api/customers")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.name").value("Juan"))
+                .andExpect(jsonPath("$.fullName").value("Juan"))
                 .andExpect(jsonPath("$.email").value("juan@example.com"));
     }
 
     @Test
     void createCustomerValidationError() throws Exception {
-        CustomerRequest req = new CustomerRequest("", "not-an-email");
+        // Incluir campos de documento aunque el nombre y el email sean inválidos
+        CustomerRequest req = new CustomerRequest("", "CC", "12345678", "not-an-email");
         mockMvc.perform(post("/api/customers")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
@@ -53,4 +55,3 @@ public class CustomerControllerIntegrationTest {
                 .andExpect(jsonPath("$").isArray());
     }
 }
-
