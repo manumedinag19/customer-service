@@ -32,7 +32,7 @@ public class CustomerServiceTest {
 
     @Test
     void createCustomer_shouldReturnSavedCustomer() {
-        Customer toSave = new Customer(null, "Test", "test@example.com", null);
+        Customer toSave = new Customer((UUID) null, "Test", "test@example.com", null);
         Customer saved = new Customer(UUID.randomUUID(), "Test", "test@example.com", Instant.now());
 
         when(customerRepository.save(any(Customer.class))).thenReturn(saved);
